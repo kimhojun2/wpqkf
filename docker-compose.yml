@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: A202DB
       MYSQL_USER: A202user
       MYSQL_PASSWORD: ekdrnwkd1!
+      TZ : "Asia/Seoul"
     ports:
       - "3306:3306"
 
