@@ -7,11 +7,13 @@ services:
       - network
     volumes:
       - mysql:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: rlaghwns1!
       MYSQL_DATABASE: A202DB
       MYSQL_USER: A202user
       MYSQL_PASSWORD: ekdrnwkd1!
+      TZ : "Asia/Seoul"
     ports:
       - "3306:3306"
 
@@ -35,10 +37,14 @@ services:
     networks:
       - network
     volumes:
-      - ./static:/djangoproject/static
+      - ./static:/wpqkf/static
     command: >
-      bash -c "
-      gunicorn A202.wsgi -b 0.0.0.0:8000"
+       bash -c  "
+       python manage.py collectstatic --noinput &&
+       python3 manage.py makemigrations &&
+       python3 manage.py migrate &&  
+       gunicorn A202.wsgi -b 0.0.0.0:8000"
+     # bash -c "gunicorn A202.wsgi -b 0.0.0.0:8000"
     ports:
       - "8000:8000"
     expose:
@@ -47,7 +53,7 @@ services:
       - mysql
 networks:
   network:
-      driver: bridge
+     
 
 volumes:
   mysql:
