@@ -13,24 +13,30 @@ class BoardListSerializer(serializers.ModelSerializer):
     # user_seq = UserSerializer()
     class Meta:
         model = Board
-        fields = ('user_seq', 'title', 'content', 'created_at','id',)
+        fields = ('id', 'user_seq', 'title', 'content', 'created_at')
+
+
+
+
+# class CommentListSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Comment
+#         fields = ('content',)
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    # user_seq = serializers.ReadOnlyField(source = 'user.id')
+    # board_seq = serializers.ReadOnlyField(source = 'board.id')
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only_fields = ('user_seq', 'board_seq')
 
 
 class BoardSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True, source='comments.all')
     class Meta:
         model = Board
         fields = '__all__'
         read_only_fields = ('user_seq',)
 
-
-class CommentSerializer(serializers.ModelSerializer):
-    class BoardSeqSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Board
-            fields = ('board_seq',)
-    
-    Board_seq = BoardSeqSerializer(read_only=True)
-
-    class Meta:
-        model = Comment
-        fields = '__all__'

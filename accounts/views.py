@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.response import Response
 from .models import User
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .serializers import CustomRegisterSerializer, ProfileSerializer
@@ -24,6 +25,7 @@ def resign(request):
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 def profile(request, username):
+    print('프로필 views함수는 작동')
     if request.method == 'GET':
         user_profile = get_object_or_404(User, username=username)
         serializer = CustomRegisterSerializer(user_profile)

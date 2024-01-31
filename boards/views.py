@@ -75,8 +75,14 @@ def comment_detail(request, comment_pk):
 
 @api_view(['POST'])
 def comment_create(request, board_pk):
-    article = get_object_or_404(Board, pk=board_pk)
+    print('11111111111')
+    print(request.user.id)
+    board = get_object_or_404(Board, pk=board_pk)
+    print(board)
+    # serializer = CommentSerializer(data=request.data)
     serializer = CommentSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(article=article)
+        print(33333333333333333333333333333333333)
+        serializer.save(board_seq=board, user_seq=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
