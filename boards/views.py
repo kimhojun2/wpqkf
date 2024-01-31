@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from django.shortcuts import get_list_or_404, get_object_or_404
 from .models import Board, Comment
-from .serializers import BoardListSerializer, BoardSerializer
+from .serializers import BoardListSerializer, BoardSerializer, CommentSerializer
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -25,7 +25,7 @@ def boardlist(request):
         serializer = BoardSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user_seq=request.user)
-            print(request.user)
+            print(f'{request.user} 작성성공')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
@@ -57,3 +57,26 @@ def board_detail(request, board_pk):
             print('[DELETE]너가 쓴글 아니야')
     
 
+@api_view(['GET', 'PUT','DELETE'])
+def comment_detail(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == 'GET':
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    elif request.methood == 'PUT':
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        
+
+@api_view(['POST'])
+def comment_create(request, board_pk):
+    article = get_object_or_404(Board, pk=board_pk)
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(article=article)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

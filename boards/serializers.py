@@ -21,3 +21,16 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = '__all__'
         read_only_fields = ('user_seq',)
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class BoardSeqSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Board
+            fields = ('board_seq',)
+    
+    Board_seq = BoardSeqSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = '__all__'

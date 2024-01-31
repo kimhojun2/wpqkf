@@ -17,7 +17,7 @@ class Comment(models.Model):
     user_seq = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
-    board_seq = models.IntegerField()
+    board_seq = models.ForeignKey(Board, on_delete=models.CASCADE)
     content = models.CharField(max_length=3000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
