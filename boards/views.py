@@ -58,6 +58,7 @@ def board_detail(request, board_pk):
     
 
 @api_view(['GET', 'PUT','DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
     if request.method == 'GET':
@@ -86,3 +87,12 @@ def comment_create(request, board_pk):
         print(33333333333333333333333333333333333)
         serializer.save(board_seq=board, user_seq=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+# @api_view(['GET'])
+# def commentlist(request, board_pk):
+#     if request.method == 'GET':
+#         boards = Board.objects.filter(is_deleted=False)
+#         serializer = BoardListSerializer(boards, many=True)
+#         print(request.user)
+#         return Response(serializer.data)

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'accounts',
     'boards',
     'questions',
+    'balls',
+    'devices',
     # DRF
     'rest_framework',
     'rest_framework.authtoken',
@@ -118,10 +120,10 @@ WSGI_APPLICATION = 'A202.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'A202DB',
-        'USER': 'A202user',
-        'PASSWORD': 'ekdrnwkd1!',
-        'HOST': 'mysql',
+        'NAME': 'testdb',
+        'USER': 'root',
+        'PASSWORD': 'ssafy1',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

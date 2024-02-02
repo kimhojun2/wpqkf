@@ -8,7 +8,18 @@ from rest_framework.decorators import permission_classes
 from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
+from dj_rest_auth.views import LoginView
 # Create your views here.
+
+class customlogin(LoginView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        user = self.request.user
+        response.data['user_seq'] = user.pk
+        response.data['username'] = user.username
+        print(response.data)
+        return response
+
 
 def resign(request):
     user = get_object_or_404(User, username=request.user)
@@ -23,7 +34,7 @@ def resign(request):
 
 
 @api_view(['GET', 'PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def profile(request, username):
     print('프로필 views함수는 작동')
     if request.method == 'GET':

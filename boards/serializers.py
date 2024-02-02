@@ -21,7 +21,7 @@ class BoardListSerializer(serializers.ModelSerializer):
 # class CommentListSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Comment
-#         fields = ('content',)
+#         fields = ('id', 'user_seq', 'board_seq', 'created_at', 'updated_at', 'is_deleted')
 
 
 class CommentSerializer(serializers.ModelSerializer):
